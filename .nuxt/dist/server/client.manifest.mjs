@@ -1,0 +1,1 @@
+export { default } from "file:///D:/Fontys/Semester%207%20-%20Advanced%20AI/Snake/node_modules/@nuxt/vite-builder/dist/runtime/client.manifest.mjs"
