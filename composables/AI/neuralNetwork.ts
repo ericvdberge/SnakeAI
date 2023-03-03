@@ -31,53 +31,17 @@ import { transpose, multiply, dot, sum, re } from 'mathjs'
  * Weights + Biases = Unique tunable params
  */
 let network = {
-    weights: [],
-    biases: [],
-    /**
-     * The data will be represented in a matrix, 
-     * because we will have multiple rows, called layers
-     */
-    // matrix: [
-    //     [0,0,0,0]
-    //     [0,0,0,0]
-    //     [0,0,0,0]
-    // ]
 }
 
 export const useNeuralNetwork = () => {
     return {
-        reluActivation,
         createLayer
     }
 }
 
-/**
- * 
- * @param {number} x 
- * @returns 0 or x
- */
-const reluActivation = (x: number) =>  {
-    if(x > 0) return x
-    return 0
-}
-
-/**
- * 
- * @param {number} x - a number (in form of weight, bias or output value) 
- * @returns 0 or 1 => stepper function
- */
-const steppingActivation = (x: number) => {
-    if(x > 0) return 1
-    else return 0
-}
-
-/**
- * 
- * @param x 
- */
-const signmoidActivation = (x: number) => {
-
-}
+type ActivationFunction = {
+    (s: number): number;
+};
 
 /**
  * 
@@ -85,7 +49,7 @@ const signmoidActivation = (x: number) => {
  * @param {number} nrOfNeurons - the number of neurons in the layer
  * @returns the calculated output values of the layer
  */
-const createLayer = (nrOfInputs: number, nrOfNeurons: number): number[] => {
+const createLayer = (nrOfInputs: number, nrOfNeurons: number, activationFunction: ActivationFunction): number[] => {
     let inputs = [] as number[]
     let weights = [] as number[][]
     let biases = [] as number[]
@@ -139,7 +103,7 @@ const createLayer = (nrOfInputs: number, nrOfNeurons: number): number[] => {
     )
 
     return outputs.map(
-        output => steppingActivation(output)
+        output => activationFunction(output)
     )
 }
 

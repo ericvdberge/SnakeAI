@@ -12,10 +12,12 @@
 
 <script setup>
 const neuralNetwork = useNeuralNetwork()
-const layer1 = neuralNetwork.createLayer(50, 18)
-const layer2 = neuralNetwork.createLayer(18, 18)
-const layer3 = neuralNetwork.createLayer(18, 18)
-const layer4 = neuralNetwork.createLayer(18, 4)
+const { signmoidActivation, steppingActivation, reluActivation } = useActivationFunction();
+
+const layer1 = neuralNetwork.createLayer(50, 18, reluActivation)
+const layer2 = neuralNetwork.createLayer(18, 18, reluActivation)
+const layer3 = neuralNetwork.createLayer(18, 18, reluActivation)
+const layer4 = neuralNetwork.createLayer(18, 4, steppingActivation)
 
 
 </script>
