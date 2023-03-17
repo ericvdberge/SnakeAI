@@ -28,13 +28,16 @@ export const useNeuralNetwork = (options: INeuralNetworkOptions) => {
 const init = (): ILayer[] => {
     //create model
     const { reluActivation, sofmaxActivation } = useActivationFunction();
-    const {structure} = neuralNetwork.options;
+    const {structure} = neuralNetwork.options as INeuralNetworkOptions;
 
     let inputs = generateInputValues() as number[];
     let layers = [] as ILayer[]
     for(let i = 0; i < structure.length; i++)
     {
-        const activation = i != structure.length - 1 ? reluActivation : sofmaxActivation
+        const activation = i != structure.length - 1 
+            ? reluActivation as IActivationFunction 
+            : sofmaxActivation as IActivationFunction
+
         let layer = createLayer(inputs, structure[i], activation) as ILayer
         layer = {
             inputs: inputs,
