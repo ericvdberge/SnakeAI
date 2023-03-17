@@ -1,87 +1,31 @@
 import { transpose, multiply, dot, sum, re } from 'mathjs'
+import { ActivationFunction, NeuralNetworkOptions } from '../contracts'
 
 /**
- * research:
- * https://towardsdatascience.com/the-beginners-glossary-of-neural-network-terms-a9617354078
+ * 
+ * @param options - options to the neural network
+ * @returns 
  */
-
-/**
- * Terminology:
- * 
- * Model:
- * Artificial Neural Network (ANN)
- *  a stack of simple learning algorithms (called layers) 
- *  that sequentually process the input, producing an output
- * 
- * Layers (called dense layer):
- * Input layer,
- * Hidden layer
- * Output layer,
- * 
- * Layer components:
- * Neuron
- * Weights
- * Biases
- * 
- * Functions:
- * Activation function
- * ReLU -> simpelest way to make something non-linear
- * Loss function -> calculate loss to adapt the weights and biasses
- * 
- * Weights + Biases = Unique tunable params
- */
-let network = {
-}
-
-export const useNeuralNetwork = () => {
+export const useNeuralNetwork = (options: NeuralNetworkOptions) => {
     return {
-        createLayer
+        options,
+        createLayer,
     }
 }
 
-type ActivationFunction = {
-    (s: number): number;
-};
-
 /**
  * 
- * @param {number} nrOfInputs - the number of input values going into this layer
+ * @param {number} inputs - the numbers of input values of the layer
  * @param {number} nrOfNeurons - the number of neurons in the layer
  * @returns the calculated output values of the layer
  */
-const createLayer = (nrOfInputs: number, nrOfNeurons: number, activationFunction: ActivationFunction): number[] => {
-    let inputs = [] as number[]
+const createLayer = (inputs: number[], nrOfNeurons: number, activationFunction: ActivationFunction): number[] => { 
     let weights = [] as number[][]
     let biases = [] as number[]
 
-    //generate inputs
-    for(let i = 0; i < nrOfInputs; i++) 
-    {
-        const randomNumber: number = generateRandomNumber()
-        inputs.push(randomNumber)
-    }
-
-    //generate weights
-    let partialArray : number[] = []
-    var nrOfParams: number = nrOfInputs * nrOfNeurons
-    for(let i = 0; i < nrOfParams; i++)
-    {
-        const randomNumber = generateRandomNumber()
-        partialArray.push(randomNumber)
-        if((i + 1) % nrOfInputs == 0) //generate a vector after the number of inputs
-        {
-            weights.push(partialArray)
-            partialArray = []
-        }
-    }
-
-    //generate biases
-    for(let i = 0; i < nrOfNeurons; i++) 
-    {
-        const randomNumber = generateRandomNumber()
-        biases.push(randomNumber)
-    }
-
+    weights = generateWeights(inputs, nrOfNeurons)
+    biases = generateBiases(nrOfNeurons)
+    
     /**
      * validate
      */
@@ -97,14 +41,10 @@ const createLayer = (nrOfInputs: number, nrOfNeurons: number, activationFunction
      * calculate the outputs
      */
     const outputs = weights.map((w, i) => 
-        // Math.round(
-            dot(w, inputs) + biases[i]
-        // )
+        dot(w, inputs) + biases[i]
     )
 
-    return outputs.map(
-        output => activationFunction(output)
-    )
+    return activationFunction(outputs)
 }
 
 /**
@@ -118,4 +58,46 @@ const generateRandomNumber = (): number => {
      * and subtracting 1 to get a range between -1 and 1
      */
     return Math.random() * 2 - 1;
+}
+
+/**
+ * 
+ * @param inputs 
+ * @param nrOfNeurons 
+ * @returns 
+ */
+const generateWeights = (inputs: number[], nrOfNeurons: number): number[][] => {
+    let weights = [] as number[][]
+
+    //generate weights
+    for(let i = 0; i < nrOfNeurons; i++)
+    {
+        let weightsForOneNeuron : number[] = []
+        for(let j = 0; j < inputs.length; j++)
+        {
+            const randomNumber: number = generateRandomNumber()
+            weightsForOneNeuron.push(randomNumber)
+        }
+        weights.push(weightsForOneNeuron)
+    }
+
+    return weights
+}
+
+/**
+ * 
+ * @param nrOfNeurons 
+ * @returns 
+ */
+const generateBiases = (nrOfNeurons: number): number[] => {
+    let biases = [] as number[]
+
+    //generate biases
+    for(let i = 0; i < nrOfNeurons; i++) 
+    {
+        const randomNumber: number = generateRandomNumber()
+        biases.push(randomNumber)
+    }
+
+    return biases;
 }
