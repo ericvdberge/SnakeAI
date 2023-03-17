@@ -14,7 +14,7 @@ export const useActivationFunction = () => {
 /**
  * 
  * @param {number} x - a number (in form of weight, bias or output value) 
- * @returns 0 or x
+ * @returns a vector of 0 or x values
  */
 const reluActivation = (x: number[]): number[] =>  {
     x.map(number => 
@@ -26,7 +26,7 @@ const reluActivation = (x: number[]): number[] =>  {
 /**
  * 
  * @param {number} x - a number (in form of weight, bias or output value) 
- * @returns 0 or 1
+ * @returns a vector of 0 or 1 values
  */
 const steppingActivation = (x: number[]): number[] => {
     x.map(number => 
@@ -38,7 +38,7 @@ const steppingActivation = (x: number[]): number[] => {
 /**
  * 
  * @param {number} x - a number (in form of weight, bias or output value) 
- * @Returns an exponentional value
+ * @Returns a vector of exponentional values
  */
 const signmoidActivation = (x: number[]): number[] => {
     x.map(number => 
@@ -47,6 +47,11 @@ const signmoidActivation = (x: number[]): number[] => {
     return x
 }
 
+/**
+ * 
+ * @param x  - a number (in form of weight, bias or output value)
+ * @returns a vector of values between 0 and 1
+ */
 const sofmaxActivation = (x: number[]): number[] => {
     x = x.map(number => 
         Math.exp(number)
