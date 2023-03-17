@@ -1,9 +1,4 @@
 /**
- * Contracts
- */
-
-
-/**
  * The interface of the Neural Network
  */
 export interface INeuralNetwork {
@@ -31,6 +26,6 @@ export interface ILayer  {
 /**
  * The interface for an activation function
  */
-export interface ActivationFunction {
+export interface IActivationFunction {
     (x: number[]): number[]
 }

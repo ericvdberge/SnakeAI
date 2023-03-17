@@ -1,5 +1,5 @@
-import { transpose, multiply, dot, sum, re } from 'mathjs'
-import { ActivationFunction, INeuralNetworkOptions, INeuralNetwork, ILayer } from '../contracts'
+import { dot } from 'mathjs'
+import { IActivationFunction, INeuralNetworkOptions, INeuralNetwork, ILayer } from '../contracts'
 import { useActivationFunction } from '../AI/activationFunction'
 
 let neuralNetwork = {
@@ -56,7 +56,7 @@ const init = (): ILayer[] => {
  * @param {number} nrOfNeurons - the number of neurons in the layer
  * @returns the calculated output values of the layer
  */
-const createLayer = (inputs: number[], nrOfNeurons: number, activationFunction: ActivationFunction): ILayer => { 
+const createLayer = (inputs: number[], nrOfNeurons: number, activationFunction: IActivationFunction): ILayer => { 
     let weights = [] as number[][]
     let biases = [] as number[]
 
