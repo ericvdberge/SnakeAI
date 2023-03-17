@@ -7,14 +7,14 @@
  * The interface of the Neural Network
  */
 export interface INeuralNetwork {
-    options: NeuralNetworkOptions 
+    options: INeuralNetworkOptions 
     layers: ILayer[]
 }
 
 /**
  * The interface for the options going into the neural network
  */
-export type NeuralNetworkOptions = {
+export interface INeuralNetworkOptions {
     structure : number[]
 }
 

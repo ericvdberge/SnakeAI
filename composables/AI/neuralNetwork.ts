@@ -1,9 +1,9 @@
 import { transpose, multiply, dot, sum, re } from 'mathjs'
-import { ActivationFunction, NeuralNetworkOptions, INeuralNetwork, ILayer } from '../contracts'
+import { ActivationFunction, INeuralNetworkOptions, INeuralNetwork, ILayer } from '../contracts'
 import { useActivationFunction } from '../AI/activationFunction'
 
 let neuralNetwork = {
-    options: {} as NeuralNetworkOptions,
+    options: {} as INeuralNetworkOptions,
     layers: [] as ILayer[]
 } as INeuralNetwork
 
@@ -12,13 +12,42 @@ let neuralNetwork = {
  * @param options - options to the neural network
  * @returns 
  */
-export const useNeuralNetwork = (options: NeuralNetworkOptions) => {
+export const useNeuralNetwork = (options: INeuralNetworkOptions) => {
     neuralNetwork.options = options
-    neuralNetwork.layers = generateLayers()
+    neuralNetwork.layers = init()
 
     return {
         ...neuralNetwork,
     }
+}
+
+/**
+ * 
+ * @returns the layers of the model
+ */
+const init = (): ILayer[] => {
+    //create model
+    const { reluActivation, sofmaxActivation } = useActivationFunction();
+    const {structure} = neuralNetwork.options;
+
+    let inputs = generateInputValues() as number[];
+    let layers = [] as ILayer[]
+    for(let i = 0; i < structure.length; i++)
+    {
+        const activation = i != structure.length - 1 ? reluActivation : sofmaxActivation
+        let layer = createLayer(inputs, structure[i], activation) as ILayer
+        layer = {
+            inputs: inputs,
+            weights: layer.weights,
+            biases: layer.biases,
+            outputs: layer.outputs.map(n => +parseFloat(n.toString()).toFixed(2))
+
+        } as ILayer
+        layers.push(layer)
+        inputs = layer.outputs
+    }
+
+    return layers
 }
 
 /**
@@ -113,35 +142,6 @@ const generateBiases = (nrOfNeurons: number): number[] => {
     }
 
     return biases;
-}
-
-/**
- * 
- * @returns 
- */
-const generateLayers = (): ILayer[] => {
-    //create model
-    const { reluActivation, sofmaxActivation } = useActivationFunction();
-    const {structure} = neuralNetwork.options;
-
-    let inputs = generateInputValues() as number[];
-    let layers = [] as ILayer[]
-    for(let i = 0; i < structure.length; i++)
-    {
-        const activation = i != structure.length - 1 ? reluActivation : sofmaxActivation
-        let layer = createLayer(inputs, structure[i], activation) as ILayer
-        layer = {
-            inputs: inputs,
-            weights: layer.weights,
-            biases: layer.biases,
-            outputs: layer.outputs.map(n => +parseFloat(n.toString()).toFixed(2))
-
-        } as ILayer
-        layers.push(layer)
-        inputs = layer.outputs
-    }
-
-    return layers
 }
 
 /**
