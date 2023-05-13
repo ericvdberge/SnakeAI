@@ -31,7 +31,7 @@ export interface IActivationFunction {
 }
 
 /**
- * Types for the game entities
+ * The interface for the apple state
  */
 export interface IApple {
     size: number,
@@ -41,17 +41,18 @@ export interface IApple {
     }
 }
 
+/**
+ * The interface for the game state
+ */
 export interface IGame {
     gridSize: number,
     framesPerSecond: number,
     isGameOver: boolean,
 }
 
-export interface IPos {
-    x: number,
-    y: number
-}
-
+/**
+ * The interface for the snake state
+ */
 export interface ISnake {
     size: number,
     speed: IPos
@@ -59,8 +60,22 @@ export interface ISnake {
     body: Array<IPos>
 }
 
+/**
+ * The interface for a position, used by multiple interfaces
+ */
+export interface IPos {
+    x: number,
+    y: number
+}
+
+/**
+ * The interface for the playground (drawing point)
+ */
 export interface IPlayGround extends CanvasRenderingContext2D {}
 
+/**
+ * The interface for the controls
+ */
 export interface Ikeys {
     left: string,
     right: string,

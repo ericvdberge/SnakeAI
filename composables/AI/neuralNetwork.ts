@@ -28,7 +28,7 @@ export const useNeuralNetwork = (options: INeuralNetworkOptions) => {
 const init = (): ILayer[] => {
     //create model
     const { reluActivation, softmaxActivation } = useActivationFunction();
-    const {structure} = neuralNetwork.options as INeuralNetworkOptions;
+    const { structure } = neuralNetwork.options as INeuralNetworkOptions;
 
     let inputs = generateInputValues() as number[];
     let layers = [] as ILayer[]
@@ -39,13 +39,7 @@ const init = (): ILayer[] => {
             : softmaxActivation as IActivationFunction
 
         let layer = createLayer(inputs, structure[i], activation) as ILayer
-        layer = {
-            inputs: inputs,
-            weights: layer.weights,
-            biases: layer.biases,
-            outputs: layer.outputs.map(n => +parseFloat(n.toString()).toFixed(2))
-
-        } as ILayer
+        layer.outputs = layer.outputs.map(n => +parseFloat(n.toString()).toFixed(2)) // round of output values to make it readable
         layers.push(layer)
         inputs = layer.outputs
     }
