@@ -1,12 +1,14 @@
+import { IGame, IPlayGround, ISnake } from "../contracts";
+
 /**
  * Game variables
 */
-let playGround = null;
+let playGround: CanvasRenderingContext2D;
 const game = {
     gridSize: 400,
     framesPerSecond: 10,
     isGameOver: false,
-}
+} as IGame
 
 
 /** 
@@ -14,7 +16,7 @@ const game = {
  * @constructor
  * @param {HtmlElement} canvas - the canvas where the game will be played
  */
-export const useGame = (canvas) => {
+export const useGame = (canvas: HTMLCanvasElement) => {
     setup(canvas)
     return {
         play,
@@ -27,24 +29,24 @@ export const useGame = (canvas) => {
  * Setup and create the game engine
  * @param {HtmlElement} canvas 
  */
-const setup = (canvas) => {
+const setup = (canvas: HTMLCanvasElement) => {
     // set width and height of the game playground
     canvas.width = game.gridSize
     canvas.height = game.gridSize
 
     //draw the playground onto the screen
-    playGround = canvas.getContext('2d')
+    playGround = canvas.getContext('2d') as IPlayGround
     drawFrame()
 
-    useState('playGround', _ => playGround)
-    useState('game', _ => game)
+    useState('playGround', () => playGround)
+    useState('game', () => game)
 }
 
 /** creates the main loop of the game
  * @param {Promise} callback - the gameloop function
  */
-const play = (callback) => {
-    setTimeout(_ => {
+const play = (callback: Function) => {
+    setTimeout(() => {
         //draw new frame
         drawFrame()
         //do game loop logic
@@ -57,7 +59,7 @@ const play = (callback) => {
 const reset = () => {
      //update state from the game so other
      //components can check on gameOver field
-     useState("game", _ => game)
+     useState("game", () => game)
 }
 
 const drawFrame = () => {
@@ -71,11 +73,11 @@ const isGameOver = () => {
     //and return if the game is over
     let gameOver = false
     
-    const snake = useState('snake').value
-    if(snake.head.position.x >= game.gridSize ||
-       snake.head.position.y >= game.gridSize ||
-       snake.head.position.x < 0 ||
-       snake.head.position.y < 0
+    const snake = useState('snake').value as ISnake
+    if(snake.head.x >= game.gridSize ||
+       snake.head.y >= game.gridSize ||
+       snake.head.x < 0 ||
+       snake.head.y < 0
     )
     {
         gameOver = true

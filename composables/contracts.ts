@@ -29,3 +29,41 @@ export interface ILayer  {
 export interface IActivationFunction {
     (x: number[]): number[]
 }
+
+/**
+ * Types for the game entities
+ */
+export interface IApple {
+    size: number,
+    position: {
+        x: number,
+        y: number
+    }
+}
+
+export interface IGame {
+    gridSize: number,
+    framesPerSecond: number,
+    isGameOver: boolean,
+}
+
+export interface IPos {
+    x: number,
+    y: number
+}
+
+export interface ISnake {
+    size: number,
+    speed: IPos
+    head: IPos,
+    body: Array<IPos>
+}
+
+export interface IPlayGround extends CanvasRenderingContext2D {}
+
+export interface Ikeys {
+    left: string,
+    right: string,
+    down: string,
+    up: string
+}

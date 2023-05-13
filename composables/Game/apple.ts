@@ -1,3 +1,4 @@
+import { IApple, IGame, ISnake } from "../contracts"
 /**
  * get different type of foods
  * reactions:
@@ -7,9 +8,7 @@
  *  make a poisened apple
  *  add two apples at once
  */
-
-
-let playGround = null
+let playGround: CanvasRenderingContext2D
 
 let apple = {
     size: 10,
@@ -17,7 +16,7 @@ let apple = {
         x: 0,
         y: 0
     }
-}
+} as IApple
 
 export const useApple = () => {
     setup()
@@ -29,24 +28,24 @@ export const useApple = () => {
 
 const setup = () => {
     //set playground
-    playGround = useState('playGround').value
+    playGround = useState<CanvasRenderingContext2D>('playGround').value
     replace()
     
 }
 
 const replace = () => {
     //get the state of the game and snake
-    const game = useState('game').value
-    const snake = useState('snake').value
+    const game = useState('game').value as IGame
+    const snake = useState('snake').value as ISnake
 
     //calculate apple position
     apple.position.x = Math.floor(Math.random() * (game.gridSize / snake.size)) * snake.size
     apple.position.y = Math.floor(Math.random() * (game.gridSize / snake.size)) * snake.size
-    useState('apple', _ => apple)
+    useState('apple', () => apple)
 }
 
 const draw = () => {
-    const game = useState('game').value
+    const game = useState('game').value as IGame
     if(game.isGameOver) replace()
     // draw rectangle
     playGround.fillStyle = "red"
