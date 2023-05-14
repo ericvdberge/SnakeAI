@@ -1,12 +1,14 @@
-let playGround = null
+import { IPlayGround, ISnake } from "../contracts"
+
+let playGround: IPlayGround | null;
 
 let sensor = {
     reach: 50,
     position: {
-        bottomLeft: 0,
-        bottomRight: 0,
-        topLeft: 0,
-        topRight: 0,
+        bottomLeft: {from: 0, to: 0},
+        bottomRight: {from: 0, to: 0},
+        topLeft: {from: 0, to: 0},
+        topRight: {from: 0, to: 0},
     }
 }   
 
@@ -19,12 +21,24 @@ export const useSensor = () => {
     }
 }
 
+interface StatePosition {
+    from: number,
+    to: number
+}
+
+interface SensorPosition {
+    bottomLeft: StatePosition
+    bottomRight: StatePosition
+    topLeft: StatePosition
+    topRight: StatePosition
+}
+
 /**
  * Calculates the values of the sensor
  */
 const update = () => {
-    const snake = useState('snake').value
-    const { x, y } = snake.head.position
+    const snake = useState('snake').value as ISnake
+    const { x, y } = snake.head
     sensor.position = {
         bottomLeft: {
             from: x - sensor.reach,
@@ -42,20 +56,22 @@ const update = () => {
             from: x + snake.size + sensor.reach,
             to: y - sensor.reach
         } 
-    }
-    useState("sensor", _ => sensor)
+    } as SensorPosition;
+    useState("sensor", () => sensor)
 }
 
 /**
  * Setup the sensor object
  */
 const setup = () => {
-    playGround = useState('playGround').value
+    playGround = useState('playGround').value as IPlayGround
 }
 
 const draw = () => {
-    const snake = useState('snake').value
-    const {x, y} = snake.head.position
+    if(playGround == null) return
+
+    const snake = useState('snake').value as ISnake
+    const {x, y} = snake.head
 
     playGround.strokeStyle = "#fff"
     playGround.beginPath()

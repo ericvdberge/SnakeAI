@@ -2,10 +2,10 @@ import { dot } from 'mathjs'
 import { IActivationFunction, INeuralNetworkOptions, INeuralNetwork, ILayer } from '../contracts'
 import { useActivationFunction } from '../AI/activationFunction'
 
-let neuralNetwork = {
+let neuralNetwork: INeuralNetwork = {
     options: {} as INeuralNetworkOptions,
     layers: [] as ILayer[]
-} as INeuralNetwork
+}
 
 /**
  * 

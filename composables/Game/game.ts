@@ -3,13 +3,12 @@ import { IGame, IPlayGround, ISnake } from "../contracts";
 /**
  * Game variables
 */
-let playGround: CanvasRenderingContext2D;
-const game = {
+let playGround: IPlayGround | null
+const game: IGame = {
     gridSize: 400,
     framesPerSecond: 10,
     isGameOver: false,
-} as IGame
-
+}
 
 /** 
  * Represents the game engine
@@ -35,11 +34,11 @@ const setup = (canvas: HTMLCanvasElement) => {
     canvas.height = game.gridSize
 
     //draw the playground onto the screen
-    playGround = canvas.getContext('2d') as IPlayGround
+    playGround = canvas.getContext('2d')
     drawFrame()
 
-    useState('playGround', () => playGround)
-    useState('game', () => game)
+    useState<IPlayGround | null>('playGround', () => playGround)
+    useState<IGame>('game', () => game)
 }
 
 /** creates the main loop of the game
@@ -63,6 +62,8 @@ const reset = () => {
 }
 
 const drawFrame = () => {
+    if(playGround == null) return;
+    
     playGround.clearRect(0, 0, game.gridSize, game.gridSize)
     playGround.fillStyle = "#000"
     playGround.fillRect(0, 0, game.gridSize, game.gridSize)
@@ -73,7 +74,7 @@ const isGameOver = () => {
     //and return if the game is over
     let gameOver = false
     
-    const snake = useState('snake').value as ISnake
+    const snake = useState<ISnake>('snake').value
     if(snake.head.x >= game.gridSize ||
        snake.head.y >= game.gridSize ||
        snake.head.x < 0 ||

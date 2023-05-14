@@ -1,8 +1,8 @@
-import { IApple, IGame, IPlayGround, ISnake, Ikeys } from "../contracts";
+import { IApple, IGame, IPlayGround, ISnake, IKeys } from "../contracts";
 
-let playGround: IPlayGround;
+let playGround: IPlayGround | null;
 
-let snake = {
+let snake: ISnake = {
     size: 10,
     speed: {
         x: 0,
@@ -13,7 +13,7 @@ let snake = {
         x: 50,
         y: 50
     }]
-} as ISnake
+}
 
 /**
  * Represents the snake
@@ -32,7 +32,7 @@ export const useSnake = () => {
  * Setup the snake object
  */
 const setup = () => {
-   playGround = useState('playGround').value as IPlayGround
+   playGround = useState<IPlayGround | null>('playGround').value
    snake.speed.x = snake.size
    snake.speed.y = 0
    snake.head = snake.body[0]
@@ -43,11 +43,12 @@ const setup = () => {
  * Draws the snake onto the scren
  */
 const draw = () => {
+    if(playGround == null) return;
     //draw the snake onto the screen
     playGround.fillStyle = "lime"
 
     snake.body.forEach(bodyPart => {
-        playGround.fillRect(bodyPart.x, bodyPart.y, snake.size, snake.size)
+        playGround?.fillRect(bodyPart.x, bodyPart.y, snake.size, snake.size)
     })
 }
 
@@ -62,7 +63,7 @@ const move = () => {
 
     //change the speed of the snake when key press
     //it cannot move in opposite direction
-    var keys = useKeyInput((key: keyof Ikeys) => {
+    var keys = useKeyInput((key: keyof IKeys) => {
         if(key == keys.left && snake.speed.x == 0)
         {
             snake.speed.y = 0

@@ -76,7 +76,7 @@ export interface IPlayGround extends CanvasRenderingContext2D {}
 /**
  * The interface for the controls
  */
-export interface Ikeys {
+export interface IKeys {
     left: string,
     right: string,
     down: string,
