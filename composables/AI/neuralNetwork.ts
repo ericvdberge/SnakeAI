@@ -1,10 +1,10 @@
 import { dot } from 'mathjs'
-import { IActivationFunction, INeuralNetworkOptions, INeuralNetwork, ILayer } from '../contracts'
+import { IActivationFunction, INeuralNetworkOptions, INeuralNetwork, ILayer, ILayerState } from '../contracts'
 import { useActivationFunction } from '../AI/activationFunction'
 
 let neuralNetwork: INeuralNetwork = {
     options: {} as INeuralNetworkOptions,
-    layers: [] as ILayer[]
+    layers: [] as ILayerState[]
 }
 
 /**
@@ -25,23 +25,24 @@ export const useNeuralNetwork = (options: INeuralNetworkOptions) => {
  * 
  * @returns the layers of the model
  */
-const init = (): ILayer[] => {
+const init = (): ILayerState[] => {
     //create model
     const { reluActivation, softmaxActivation } = useActivationFunction();
     const { structure } = neuralNetwork.options as INeuralNetworkOptions;
 
     let inputs = generateInputValues() as number[];
-    let layers = [] as ILayer[]
+    let layers: ILayerState[] = []
     for(let i = 0; i < structure.length; i++)
     {
         const activation = i != structure.length - 1 
             ? reluActivation as IActivationFunction 
             : softmaxActivation as IActivationFunction
 
-        let layer = createLayer(inputs, structure[i], activation) as ILayer
-        layer.outputs = layer.outputs.map(n => +parseFloat(n.toString()).toFixed(2)) // round of output values to make it readable
-        layers.push(layer)
-        inputs = layer.outputs
+        let layer: ILayer = createLayer()
+        let layerState: ILayerState = layer.forward(inputs, structure[i], activation)
+        layerState.outputs = layerState.outputs.map(n => +parseFloat(n.toString()).toFixed(2)) // round of output values to make it readable
+        layers.push(layerState)
+        inputs = layerState.outputs
     }
 
     return layers
@@ -53,37 +54,47 @@ const init = (): ILayer[] => {
  * @param {number} nrOfNeurons - the number of neurons in the layer
  * @returns the calculated output values of the layer
  */
-const createLayer = (inputs: number[], nrOfNeurons: number, activationFunction: IActivationFunction): ILayer => { 
-    let weights = [] as number[][]
-    let biases = [] as number[]
+const createLayer = (): ILayer => { 
+    let weights: number[][] = []
+    let biases: number[] = [] 
 
-    weights = generateWeights(inputs, nrOfNeurons)
-    biases = generateBiases(nrOfNeurons)
-    
-    /**
-     * validate
-     */
-    if(weights.length != biases.length) {
-        throw new Error("The neural network does not have as much biases as the number of neurons")
+    const forward = (inputs: number[], nrOfNeurons: number, activationFunction: IActivationFunction) => {
+        weights = generateWeights(inputs, nrOfNeurons)
+        biases = generateBiases(nrOfNeurons)
+
+        /**
+         * validate
+         */
+        if(weights.length != biases.length) {
+            throw new Error("The neural network does not have as much biases as the number of neurons")
+        }
+
+        if(weights[0].length != inputs.length) {
+            throw new Error("The neural network does not have as weight connection as inputs")
+        }
+        
+        /**
+         * calculate the outputs
+         */
+        const outputs = weights.map((w, i) => 
+            dot(w, inputs) + biases[i]
+        )
+
+        return {
+            inputs: inputs,
+            weights: weights,
+            biases: biases,
+            outputs: activationFunction().forward(outputs)
+        }
     }
 
-    if(weights[0].length != inputs.length) {
-        throw new Error("The neural network does not have as weight connection as inputs")
+    const backward = () => {
+        return;
     }
-    
-    /**
-     * calculate the outputs
-     */
-    const outputs = weights.map((w, i) => 
-        dot(w, inputs) + biases[i]
-    )
 
-    return {
-        inputs: inputs,
-        weights: weights,
-        biases: biases,
-        outputs: activationFunction().forward(outputs)
-    } as ILayer
+    return { forward, backward }
+
+    
 }
 
 /**

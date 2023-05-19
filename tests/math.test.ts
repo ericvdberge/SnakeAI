@@ -1,7 +1,6 @@
 import { it, expect, describe } from "vitest"
 import { useMath }  from "../composables/AI/math"
 
-
 describe("math", () => {
     it("multiply should work", () => {
         //Arrange

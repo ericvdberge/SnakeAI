@@ -3,7 +3,7 @@
  */
 export interface INeuralNetwork {
     options: INeuralNetworkOptions 
-    layers: ILayer[]
+    layers: ILayerState[]
 }
 
 /**
@@ -17,6 +17,11 @@ export interface INeuralNetworkOptions {
  * The interface for a Neural Network layer
  */
 export interface ILayer  {
+    forward(inputs: number[], nrOfNeurons: number, activationFunction: IActivationFunction): ILayerState
+    backward(): void
+}
+
+export interface ILayerState {
     inputs: number[]
     weights: number[][];
     biases: number[]
