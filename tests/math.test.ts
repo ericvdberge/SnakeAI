@@ -40,7 +40,7 @@ describe("math", () => {
         const y = [1,2,3]
 
         //Act
-        const res = dot(x, y)
+        const res: number = dot(x, y)
         
         //Assert
         expect(res).toBe(14)

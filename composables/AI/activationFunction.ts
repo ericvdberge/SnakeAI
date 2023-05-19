@@ -17,11 +17,18 @@ export const useActivationFunction = () => {
  * @param {number} x - a number (in form of weight, bias or output value) 
  * @returns a vector of 0 or x values
  */
-const reluActivation: IActivationFunction = (x: number[]): number[] =>  {
-    x = x.map(number => 
-        Math.max(...[0, number] as number[])
-    )
-    return x; 
+const reluActivation: IActivationFunction = () => {
+    const forward = (x: number[]) => {
+        x = x.map(number => 
+            Math.max(...[0, number] as number[])
+        )
+        return x
+    }
+    const backward = () => {
+        return;
+    }
+
+    return { forward, backward }
 }
 
 /**
@@ -29,11 +36,19 @@ const reluActivation: IActivationFunction = (x: number[]): number[] =>  {
  * @param {number} x - a number (in form of weight, bias or output value) 
  * @returns a vector of 0 or 1 values
  */
-const steppingActivation: IActivationFunction = (x: number[]): number[] => {
-    x = x.map(number => 
-        number > 0 ? 1 : 0
-    )
-    return x;
+const steppingActivation: IActivationFunction = () => {
+    const forward = (x: number[]) => {
+        x = x.map(number => 
+            number > 0 ? 1 : 0
+        )
+        return x
+    }
+
+    const backward = () => {
+        return;
+    }
+    
+    return { forward, backward }
 }
 
 /**
@@ -41,11 +56,19 @@ const steppingActivation: IActivationFunction = (x: number[]): number[] => {
  * @param {number} x - a number (in form of weight, bias or output value) 
  * @Returns a vector of exponentional values
  */
-const signmoidActivation: IActivationFunction = (x: number[]): number[] => {
-    x = x.map(number => 
-        1 / (1 + Math.exp(-number))
-    )
-    return x
+const signmoidActivation: IActivationFunction = () => {
+    const forward = (x: number[]) => {
+        x = x.map(number => 
+            1 / (1 + Math.exp(-number))
+        )
+        return x
+    }
+    const backward = () => {
+        return;
+    }
+    
+    
+    return  { forward, backward }
 }
 
 /**
@@ -53,16 +76,23 @@ const signmoidActivation: IActivationFunction = (x: number[]): number[] => {
  * @param x  - a number (in form of weight, bias or output value)
  * @returns a vector of values between 0 and 1
  */
-const softmaxActivation: IActivationFunction = (x: number[]): number[] => {
-    x = x.map(number => 
-        Math.exp(number)
-    )
-    
-    const sumExponential = x.reduce((a, b) => a + b, 0)
+const softmaxActivation: IActivationFunction = () => {
+    const forward = (x: number[]) => {
+        x = x.map(number => 
+            Math.exp(number)
+        )
+        
+        const sumExponential = x.reduce((a, b) => a + b, 0)
 
-    x = x.map(number => 
-        number / sumExponential
-    )
+        x = x.map(number => 
+            number / sumExponential
+        )
+        return x
+    }
 
-    return x
+    const backward = () => {
+        return;
+    }
+
+    return  { forward, backward }
 }

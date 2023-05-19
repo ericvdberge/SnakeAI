@@ -82,7 +82,7 @@ const createLayer = (inputs: number[], nrOfNeurons: number, activationFunction: 
         inputs: inputs,
         weights: weights,
         biases: biases,
-        outputs: activationFunction(outputs)
+        outputs: activationFunction().forward(outputs)
     } as ILayer
 }
 

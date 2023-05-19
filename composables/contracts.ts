@@ -27,7 +27,10 @@ export interface ILayer  {
  * The interface for an activation function
  */
 export interface IActivationFunction {
-    (x: number[]): number[]
+    (): { 
+        forward: (x: number[]) => number[];  //forward for creating a neural network
+        backward: () => void; //backward for doing backpropagation
+    }
 }
 
 /**
