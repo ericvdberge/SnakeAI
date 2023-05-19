@@ -4,7 +4,8 @@ import { useActivationFunction } from '../AI/activationFunction'
 
 let neuralNetwork: INeuralNetwork = {
     options: {} as INeuralNetworkOptions,
-    layers: [] as ILayerState[]
+    layerStates: [] as ILayerState[],
+    layers: [] as ILayer[]
 }
 
 /**
@@ -14,7 +15,7 @@ let neuralNetwork: INeuralNetwork = {
  */
 export const useNeuralNetwork = (options: INeuralNetworkOptions) => {
     neuralNetwork.options = options
-    neuralNetwork.layers = init()
+    init()
 
     return {
         ...neuralNetwork,
@@ -25,13 +26,15 @@ export const useNeuralNetwork = (options: INeuralNetworkOptions) => {
  * 
  * @returns the layers of the model
  */
-const init = (): ILayerState[] => {
+const init = (): void => {
     //create model
     const { reluActivation, softmaxActivation } = useActivationFunction();
     const { structure } = neuralNetwork.options as INeuralNetworkOptions;
 
     let inputs = generateInputValues() as number[];
-    let layers: ILayerState[] = []
+    let layerStates: ILayerState[] = [] //information for view
+    let layers: ILayer[] = [] //full information
+
     for(let i = 0; i < structure.length; i++)
     {
         const activation = i != structure.length - 1 
@@ -41,11 +44,15 @@ const init = (): ILayerState[] => {
         let layer: ILayer = createLayer()
         let layerState: ILayerState = layer.forward(inputs, structure[i], activation)
         layerState.outputs = layerState.outputs.map(n => +parseFloat(n.toString()).toFixed(2)) // round of output values to make it readable
-        layers.push(layerState)
+        
+        layerStates.push(layerState)
+        layers.push(layer)
+
         inputs = layerState.outputs
     }
 
-    return layers
+    neuralNetwork.layerStates = layerStates
+    neuralNetwork.layers = layers
 }
 
 /**

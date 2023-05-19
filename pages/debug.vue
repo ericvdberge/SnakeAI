@@ -1,7 +1,7 @@
 <template>
     <ClientOnly>
         <div>
-            <h1 v-for="layer, index in model.layers" :key="index">
+            <h1 v-for="layer, index in model.layerStates" :key="index">
                 Output layer {{ index + 1 }}: {{ layer.outputs }}
             </h1>
         </div>

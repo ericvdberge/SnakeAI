@@ -3,7 +3,8 @@
  */
 export interface INeuralNetwork {
     options: INeuralNetworkOptions 
-    layers: ILayerState[]
+    layerStates: ILayerState[],
+    layers: ILayer[]
 }
 
 /**
