@@ -9,7 +9,7 @@ describe("reluActivation()", () => {
         const expected = [0, 5, 0, 3]
         
         //Act
-        var actual = reluActivation(input)
+        var actual = reluActivation().forward(input)
         
         //Assert
         for(let i = 0; i <= actual.length; i++) {

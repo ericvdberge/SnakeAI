@@ -63,10 +63,10 @@ const signmoidActivation: IActivationFunction = () => {
         )
         return x
     }
+    
     const backward = () => {
         return;
     }
-    
     
     return  { forward, backward }
 }
