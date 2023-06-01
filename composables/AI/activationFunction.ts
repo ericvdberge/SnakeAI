@@ -24,8 +24,12 @@ const reluActivation: IActivationFunction = () => {
         )
         return x
     }
-    const backward = () => {
-        return;
+    const backward = (x: number[]) => {
+        x = x.map(number => 
+            //todo
+            number / 2
+        )
+        return x
     }
 
     return { forward, backward }
@@ -44,8 +48,11 @@ const steppingActivation: IActivationFunction = () => {
         return x
     }
 
-    const backward = () => {
-        return;
+    const backward = (x: number[]) => {
+        x = x.map(number => 
+            number > 0 ? 1 : 0
+        )
+        return x
     }
     
     return { forward, backward }
@@ -64,8 +71,11 @@ const signmoidActivation: IActivationFunction = () => {
         return x
     }
     
-    const backward = () => {
-        return;
+    const backward = (x: number[]) => {
+        x = x.map(number => 
+            1 / (1 + Math.exp(-number))
+        )
+        return x;
     }
     
     return  { forward, backward }
@@ -90,8 +100,11 @@ const softmaxActivation: IActivationFunction = () => {
         return x
     }
 
-    const backward = () => {
-        return;
+    const backward = (x: number[]) => {
+        x = x.map(number => 
+            1 / (1 + Math.exp(-number))
+        )
+        return x;
     }
 
     return  { forward, backward }

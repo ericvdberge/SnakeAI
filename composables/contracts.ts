@@ -35,7 +35,7 @@ export interface ILayerState {
 export interface IActivationFunction {
     (): { 
         forward: (x: number[]) => number[];  //forward for creating a neural network
-        backward: () => void; //backward for doing backpropagation
+        backward: (x: number[]) => number[]; //backward for doing backpropagation
     }
 }
 

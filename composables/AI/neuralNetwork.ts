@@ -43,7 +43,7 @@ const init = (): void => {
 
         let layer: ILayer = createLayer()
         let layerState: ILayerState = layer.forward(inputs, structure[i], activation)
-        layerState.outputs = layerState.outputs.map(n => +parseFloat(n.toString()).toFixed(2)) // round of output values to make it readable
+        // layerState.outputs = layerState.outputs.map(n => +parseFloat(n.toString()).toFixed(2)) // round of output values to make it readable
         
         layerStates.push(layerState)
         layers.push(layer)
@@ -100,8 +100,6 @@ const createLayer = (): ILayer => {
     }
 
     return { forward, backward }
-
-    
 }
 
 /**
