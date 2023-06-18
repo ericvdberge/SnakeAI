@@ -18,7 +18,9 @@
   },
   "dependencies": {
     "mathjs": "^11.5.1",
+    "plotly.js-dist-min": "^2.24.2",
     "sass": "^1.62.1",
+    "vue-plotly": "^1.1.0",
     "vuetify": "^3.3.2"
   }
 }

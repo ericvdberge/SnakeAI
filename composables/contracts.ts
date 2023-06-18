@@ -18,15 +18,18 @@ export interface INeuralNetworkOptions {
  * The interface for a Neural Network layer
  */
 export interface ILayer  {
-    forward(inputs: number[], nrOfNeurons: number, activationFunction: IActivationFunction): ILayerState
-    backward(): void
+    weights: number[][]
+    biases: number[]
+
+    forward(): ILayerState
+    backward(dvalues: number[]): void
 }
 
 export interface ILayerState {
     inputs: number[]
     weights: number[][];
     biases: number[]
-    outputs: number[]
+    outputs: number[][]
 }
 
 /**
@@ -34,8 +37,8 @@ export interface ILayerState {
  */
 export interface IActivationFunction {
     (): { 
-        forward: (x: number[]) => number[];  //forward for creating a neural network
-        backward: (x: number[]) => number[]; //backward for doing backpropagation
+        forward: (x: number[][]) => number[][]  //forward for creating a neural network
+        backward: (x: any) => void; //backward for doing backpropagation
     }
 }
 

@@ -2,6 +2,7 @@ export const useMath = () => {
     return {
         multiply,
         dot,
+		eye
         // transpose
     }
 }
@@ -23,3 +24,18 @@ const transpose = function(a: number[][]) {
 		})
 	});
 }
+
+function eye(size: number) {
+	const matrix = [];
+  
+	for (let i = 0; i < size; i++) {
+	  const row = [];
+	  for (let j = 0; j < size; j++) {
+		row.push(i === j ? 1 : 0);
+	  }
+	  matrix.push(row);
+	}
+  
+	return matrix;
+}
+  
